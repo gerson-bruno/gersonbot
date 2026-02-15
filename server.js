@@ -37,7 +37,7 @@ app.post("/perguntar", async (req, res) => {
     // Tratamento de erro de quota
     if (data?.error?.code === 429 || data?.error?.status === "RESOURCE_EXHAUSTED") {
       return res.json({
-        resposta: "Ops! A cota gratuita da IA acabou por hoje. Tente novamente mais tarde ou aguarde a liberação de novas requisições."
+        resposta: "Ops! A cota gratuita de requisições para o GersonBot acabou por hoje. Tente novamente mais tarde ou aguarde a liberação de novas requisições."
       });
     }
 
@@ -51,11 +51,13 @@ app.post("/perguntar", async (req, res) => {
   } catch (err) {
     console.error("ERRO REAL:", err);
     res.json({
-      resposta: "Ops! Ocorreu um erro ao tentar se comunicar com a IA. Tente novamente mais tarde."
+      resposta: "Ops! Ocorreu um erro ao tentar se comunicar com GersonBot. Tente novamente mais tarde."
     });
   }
 });
 
-app.listen(3000, () => {
-  console.log("Servidor rodando em http://localhost:3000");
+// Porta dinâmica para Render, fallback para 3000 local
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });

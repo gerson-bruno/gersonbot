@@ -7,7 +7,7 @@
 <style>
   body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: #232d3e; /* azul queimado */
+    background: #232d3e;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,7 +21,7 @@
     height: 75%;
     display: flex;
     flex-direction: column;
-    background: #f0f0f0; /* fundo do chat */
+    background: #f0f0f0;
     border-radius: 25px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     overflow: hidden;
@@ -59,7 +59,7 @@
   }
 
   .user {
-    background: #607d8b; /* azul acinzentado */
+    background: #607d8b;
     color: white;
     align-self: flex-end;
     border-bottom-right-radius: 4px;
@@ -92,15 +92,14 @@
   }
 
   textarea::placeholder {
-    font-family: inherit; /* vai herdar a mesma do textarea */
-}
-
+    font-family: inherit;
+  }
 
   button {
     width: 44px;
     height: 44px;
     border: none;
-    background: #ff7043; /* laranja queimado */
+    background: #ff7043;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -120,7 +119,6 @@
     transform-origin: center;
   }
 
-  /* animação apenas do SVG */
   .plane.fly {
     animation: planeFly 0.6s ease forwards;
   }
@@ -134,17 +132,14 @@
   #chat::-webkit-scrollbar {
     width: 8px;
   }
-
   #chat::-webkit-scrollbar-thumb {
     background: rgba(0,0,0,0.2);
     border-radius: 4px;
   }
-
   #chat::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  /* Markdown */
   .bot b { font-weight: bold; }
   .bot h1, .bot h2, .bot h3, .bot h4 { font-weight: bold; margin: 5px 0; }
   .bot ul, .bot ol { margin: 5px 0 5px 25px; padding: 0; }
@@ -160,37 +155,28 @@
   }
   .bot a { color: #ff7043; text-decoration: underline; }
 
- 
-
-#avatar {
-  position: fixed;
-  bottom: 20px;        /* distância do rodapé */
-  right: 20px;         /* distância da borda direita */
-  height: 350px;       /* altura padrão */
-  max-height: 50vh;    /* não invade mais da metade da tela em telas pequenas */
-  width: auto;         /* largura proporcional */
-  object-fit: contain; /* mantém proporção do PNG */
-  z-index: 1000;       /* acima de outros elementos */
-  transition: height 0.3s ease; /* animação suave ao redimensionar */
-}
-
-/* Em telas médias (tablet) diminui a altura */
-@media (max-width: 1024px) {
   #avatar {
-    height: 200px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    height: 350px;
+    max-height: 50vh;
+    width: auto;
+    object-fit: contain;
+    z-index: 1000;
+    transition: height 0.3s ease;
   }
-}
 
-/* Em telas pequenas (celular) desaparece */
-@media (max-width: 768px) {
-  #avatar {
-    display: none;
+  @media (max-width: 1024px) {
+    #avatar {
+      height: 200px;
+    }
   }
-}
-
-
-
-
+  @media (max-width: 768px) {
+    #avatar {
+      display: none;
+    }
+  }
 </style>
 </head>
 <body>
@@ -269,11 +255,9 @@ async function enviar() {
   const pergunta = input.value.trim();
   if (!pergunta) return;
 
-  // animação do avião
   plane.classList.add("fly");
   setTimeout(() => plane.classList.remove("fly"), 600);
 
-  // mensagem do usuário
   const userMsg = document.createElement("div");
   userMsg.className = "msg user";
   userMsg.innerHTML = `<b>Você:</b> ${pergunta}`;
@@ -281,7 +265,6 @@ async function enviar() {
   input.value = "";
   chat.scrollTop = chat.scrollHeight;
 
-  // mensagem da IA
   const botMsg = document.createElement("div");
   botMsg.className = "msg bot";
   botMsg.innerHTML = "<b>GersonBot:</b> <br>Carregando...";
@@ -289,7 +272,8 @@ async function enviar() {
   chat.scrollTop = chat.scrollHeight;
 
   try {
-    const resposta = await fetch("http://localhost:3000/perguntar", {
+    // chamada ajustada para produção
+    const resposta = await fetch("/perguntar", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ pergunta })
@@ -306,7 +290,6 @@ async function enviar() {
   }
 }
 
-// Enviar com Enter, Shift+Enter quebra linha
 document.getElementById("pergunta").addEventListener("keydown", function(e) {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
@@ -317,7 +300,6 @@ document.getElementById("sendBtn").addEventListener("click", enviar);
 </script>
 
 <img id="avatar" src="img/avatar.png" alt="Avatar GersonBot">
-
 
 </body>
 </html>
