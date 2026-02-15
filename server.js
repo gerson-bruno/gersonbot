@@ -43,17 +43,17 @@ app.post("/perguntar", async (req, res) => {
 
     if (data?.error?.code === 429 || data?.error?.status === "RESOURCE_EXHAUSTED") {
       return res.json({
-        resposta: "Ops! A cota gratuita de requisições para o GersonBot acabou por hoje. Tente novamente mais tarde."
+        resposta: "Ops! A cota gratuita de requisições para o GersonBot acabou por hoje. Tente novamente mais tarde. 😢"
       });
     }
 
-    const texto = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sem resposta da IA";
+    const texto = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sem resposta do GersonBot 😅";
     res.json({ resposta: texto });
 
   } catch (err) {
     console.error("ERRO REAL:", err);
     res.json({
-      resposta: "Ops! Ocorreu um erro ao tentar se comunicar com GersonBot. Tente novamente mais tarde."
+      resposta: "Ops! Ocorreu um erro ao tentar se comunicar com GersonBot. Tente novamente mais tarde. 😢"
     });
   }
 });
